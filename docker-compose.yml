@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  gofetcher:
+    build:
+      context: ./
+      dockerfile: ./docker/gofetcher/Dockerfile
+    hostname: 'gofetcher'
+    ports:
+      - 8888:8888
+    volumes:
+      - ../gofetcher:/go/src/github.com/tsurubee/gofetcher
+    working_dir: /go/src/github.com/tsurubee/gofetcher
+    command: make server
