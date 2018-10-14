@@ -2,30 +2,39 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"io/ioutil"
-	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
+	"github.com/gorilla/mux"
+	"fmt"
 )
 
+var UserFiles = map[string]string{
+	"authKey": "authorized_keys",
+}
+
 type File struct {
-	FileName string `json:"filename"`
+	Path     string `json:"path"`
 	Contents string `json:"contents"`
 }
 
-func FetchAuthorizedKeys(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	username := p.ByName("username")
-	f := File{}
-	f.FileName = "authorized_keys"
+func FileHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	f := &File{}
+	f.Path = fmt.Sprintf("/home/%s/.ssh/%s", vars["username"], UserFiles[vars["fileType"]])
+	f.Open()
 
-	data, err := ioutil.ReadFile(fmt.Sprintf("/home/%s/.ssh/authorized_keys", username))
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(f); err != nil {
+		logrus.Info(err)
+	}
+}
+
+func (f *File) Open() {
+	data, err := ioutil.ReadFile(f.Path)
 	if err != nil {
 		logrus.Info(err)
 	}
 	f.Contents = string(data)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(f)
 }

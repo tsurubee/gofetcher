@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"github.com/sirupsen/logrus"
 	"github.com/Gurpartap/logrus-stack"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
 func init() {
@@ -14,8 +14,8 @@ func init() {
 }
 
 func main() {
-	router := httprouter.New()
-	router.GET("/files/keys/:username", FetchAuthorizedKeys)
+	r := mux.NewRouter()
+	r.HandleFunc("/files/{fileType}/{username}", FileHandler)
 	logrus.Info("Start Listening ...")
-	logrus.Fatal(http.ListenAndServe(":8888", router))
+	logrus.Fatal(http.ListenAndServe(":8888", r))
 }
