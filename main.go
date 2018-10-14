@@ -5,7 +5,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/Gurpartap/logrus-stack"
 	"github.com/julienschmidt/httprouter"
-	"github.com/tsurubee/gofetcher/api"
 )
 
 func init() {
@@ -16,7 +15,7 @@ func init() {
 
 func main() {
 	router := httprouter.New()
-	router.GET("/files/keys/:username", api.FetchAuthorizedKeys)
-
+	router.GET("/files/keys/:username", FetchAuthorizedKeys)
+	logrus.Info("Start Listening ...")
 	logrus.Fatal(http.ListenAndServe(":8888", router))
 }

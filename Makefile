@@ -11,6 +11,6 @@ deps: ## Install dependencies
 	dep ensure
 
 server: deps
-	go run main.go
+	go run *.go
 
 .PHONY: default test deps
