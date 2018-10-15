@@ -14,8 +14,14 @@ func init() {
 }
 
 func main() {
+	confFile := "./config.toml"
+	c, err := loadConfig(confFile)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
 	r := mux.NewRouter()
 	r.HandleFunc("/files/{fileType}/{username}", FileHandler)
 	logrus.Info("Start Listening ...")
-	logrus.Fatal(http.ListenAndServe(":8888", r))
+	logrus.Fatal(http.ListenAndServe(c.ListenAddr, r))
 }
