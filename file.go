@@ -20,18 +20,19 @@ type File struct {
 
 func FileHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	user := r.FormValue("user")
 	f := &File{}
-	f.Path = fmt.Sprintf("/home/%s/.ssh/%s", vars["username"], UserFiles[vars["fileType"]])
-	f.Open()
+	f.Path = fmt.Sprintf("/home/%s/.ssh/%s", user, UserFiles[vars["fileType"]])
+	f.Fetch()
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(f); err != nil {
 		logrus.Info(err)
 	}
 }
 
-func (f *File) Open() {
+func (f *File) Fetch() {
 	data, err := ioutil.ReadFile(f.Path)
 	if err != nil {
 		logrus.Info(err)
