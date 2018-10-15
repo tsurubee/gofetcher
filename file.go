@@ -15,7 +15,7 @@ var UserFiles = map[string]string{
 
 type File struct {
 	Path     string `json:"path"`
-	Contents string `json:"contents"`
+	Output   string `json:"output"`
 }
 
 func FileHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,5 +37,5 @@ func (f *File) Fetch() {
 	if err != nil {
 		logrus.Info(err)
 	}
-	f.Contents = string(data)
+	f.Output = string(data)
 }

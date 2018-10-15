@@ -21,9 +21,14 @@ func main() {
 	}
 
 	r := mux.NewRouter()
+
 	r.Path("/files/{fileType}").
 	  Queries("user", "{user}").
 	  HandlerFunc(FileHandler)
+
+	r.Path("/commands/{commandType}").
+	  HandlerFunc(CommandHandler)
+
 	logrus.Info("Start Listening ...")
 	logrus.Fatal(http.ListenAndServe(c.ListenAddr, r))
 }
