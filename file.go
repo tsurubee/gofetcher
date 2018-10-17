@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"io/ioutil"
+	"path"
 	"github.com/sirupsen/logrus"
 	"github.com/gorilla/mux"
-	"fmt"
 )
 
 var UserFiles = map[string]string{
-	"authKey": "authorized_keys",
+	"authKey": ".ssh/authorized_keys",
 }
 
 type File struct {
@@ -18,11 +18,15 @@ type File struct {
 	Output   string `json:"output"`
 }
 
-func FileHandler(w http.ResponseWriter, r *http.Request) {
+func makeUserFilePath(user, file string) string {
+	return path.Join("/home", user, file)
+}
+
+func UserFileHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	user := r.FormValue("user")
 	f := &File{}
-	f.Path = fmt.Sprintf("/home/%s/.ssh/%s", user, UserFiles[vars["fileType"]])
+	f.Path = makeUserFilePath(user, UserFiles[vars["fileType"]])
 	f.Fetch()
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

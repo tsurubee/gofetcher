@@ -22,9 +22,9 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.Path("/files/{fileType}").
+	r.Path("/user/files/{fileType}").
 	  Queries("user", "{user}").
-	  HandlerFunc(FileHandler)
+	  HandlerFunc(UserFileHandler)
 
 	r.Path("/commands/{commandType}").
 	  HandlerFunc(CommandHandler)
