@@ -12,6 +12,7 @@ func TokenAuth(next http.Handler, c *config.Config) http.Handler {
 		for _, t := range c.Token {
 			if token == t {
 				next.ServeHTTP(w, r)
+				return
 			}
 		}
 		http.Error(w, "Forbidden", http.StatusForbidden)

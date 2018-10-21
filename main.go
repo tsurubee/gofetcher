@@ -30,6 +30,7 @@ func main() {
 	}
 
 	r := mux.NewRouter()
+	r.Use(middleware.Logger)
 	r.Use(func(next http.Handler) http.Handler {
 		return middleware.TokenAuth(next, c)
 	})

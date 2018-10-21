@@ -11,6 +11,6 @@ GO ?= GO111MODULE=on /usr/local/go/bin/go
 endif
 
 server: deps
-	$(GO) run *.go
+	$(GO) run main.go
 
 .PHONY: default test deps
