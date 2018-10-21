@@ -1,4 +1,5 @@
 listen_addr = "0.0.0.0:8888"
+token = ["xxx", "yyy"]
 
 [user_files]
 authKey = ".ssh/authorized_keys"

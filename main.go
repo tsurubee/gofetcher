@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/tsurubee/gofetcher/api"
 	"github.com/tsurubee/gofetcher/config"
+	"github.com/tsurubee/gofetcher/middleware"
 )
 
 func init() {
@@ -29,6 +30,10 @@ func main() {
 	}
 
 	r := mux.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(func(next http.Handler) http.Handler {
+		return middleware.TokenAuth(next, c)
+	})
 
 	r.Path("/users/{resourceType}/{resourceName}/{user}").
 	  HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

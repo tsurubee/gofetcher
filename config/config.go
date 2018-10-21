@@ -6,6 +6,7 @@ import (
 
 type Config struct {
 	ListenAddr string            `toml:"listen_addr"`
+	Token      []string          `toml:"token"`
 	UserFiles  map[string]string `toml:"user_files"`
 }
 
