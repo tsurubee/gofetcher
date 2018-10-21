@@ -3,14 +3,15 @@ package model
 import (
 	"errors"
 	"fmt"
+	"github.com/tsurubee/gofetcher/config"
 )
 
-func NewResource(vars map[string]string) (Fetcher, error) {
+func NewResource(vars map[string]string, c *config.Config) (Fetcher, error) {
 	resourceType := vars["resourceType"]
 
 	switch resourceType {
 	case "file":
-		path, err := makeUserFilePath(vars["user"], UserFiles[vars["resourceName"]])
+		path, err := makeUserFilePath(vars["user"], c.UserFiles[vars["resourceName"]])
 		if err != nil {
 			return nil, err
 		}

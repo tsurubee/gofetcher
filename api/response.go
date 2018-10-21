@@ -12,16 +12,17 @@ type HTTPError struct {
 	Message string `json:"message"`
 }
 
-func NewJsonResponse(w http.ResponseWriter, statusCode int, f model.Fetcher) {
+func NewJsonResponse(w http.ResponseWriter, statusCode int, f model.Fetcher) error {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(statusCode)
 
 	if err := json.NewEncoder(w).Encode(f); err != nil {
-		logrus.Fatal(err)
+		return err
 	}
+	return nil
 }
 
-func NewHTTPError(w http.ResponseWriter, statusCode int, err error) {
+func NewHTTPError(w http.ResponseWriter, statusCode int, err error) error {
 	logrus.Error(err)
 	w.WriteHeader(statusCode)
 
@@ -30,6 +31,7 @@ func NewHTTPError(w http.ResponseWriter, statusCode int, err error) {
 		Message: err.Error(),
 	}
 	if err := json.NewEncoder(w).Encode(e); err != nil {
-		logrus.Fatal(err)
+		return err
 	}
+	return nil
 }

@@ -4,13 +4,13 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-type config struct {
+type Config struct {
 	ListenAddr string            `toml:"listen_addr"`
 	UserFiles  map[string]string `toml:"user_files"`
 }
 
-func LoadConfig(path string) (*config, error) {
-	var c config
+func LoadConfig(path string) (*Config, error) {
+	var c Config
 	defaultConfig(&c)
 
 	_, err := toml.DecodeFile(path, &c)
@@ -21,6 +21,6 @@ func LoadConfig(path string) (*config, error) {
 	return &c, nil
 }
 
-func defaultConfig(config *config) {
+func defaultConfig(config *Config) {
 	config.ListenAddr = "0.0.0.0:8888"
 }

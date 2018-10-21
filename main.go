@@ -31,7 +31,12 @@ func main() {
 	r := mux.NewRouter()
 
 	r.Path("/users/{resourceType}/{resourceName}/{user}").
-	  HandlerFunc(api.UsersHandler)
+	  HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	  	err = api.UsersHandler(w, r, c)
+	  	if err != nil {
+	  		logrus.Fatal(err)
+		}
+	})
 
 	logrus.Info("Start Listening on ", c.ListenAddr)
 	logrus.Fatal(http.ListenAndServe(c.ListenAddr, r))
