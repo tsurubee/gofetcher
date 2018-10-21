@@ -1,6 +1,8 @@
 FROM golang:latest
 
-RUN mkdir -p /home/tsurubee/.ssh
+RUN useradd tsurubee && \
+    echo "tsurubee:testpass" | chpasswd && \
+    mkdir -p /home/tsurubee/.ssh
 
 ADD misc/testdata/authorized_keys /home/tsurubee/.ssh
 

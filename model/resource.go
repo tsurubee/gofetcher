@@ -10,7 +10,11 @@ func NewResource(vars map[string]string) (Fetcher, error) {
 
 	switch resourceType {
 	case "file":
-		return &File{Path: makeUserFilePath(vars["user"], UserFiles[vars["resourceName"]])}, nil
+		path, err := makeUserFilePath(vars["user"], UserFiles[vars["resourceName"]])
+		if err != nil {
+			return nil, err
+		}
+		return &File{Path: path}, nil
 	case "command":
 		// ToDO
 		return nil, nil
