@@ -5,7 +5,7 @@ import (
 	"path"
 )
 
-var UserFiles = map[string]string{
+var UserFiles = map[string]string {
 	"authKey": ".ssh/authorized_keys",
 }
 

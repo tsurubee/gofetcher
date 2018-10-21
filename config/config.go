@@ -1,4 +1,4 @@
-package main
+package config
 
 import "github.com/BurntSushi/toml"
 
@@ -6,7 +6,7 @@ type config struct {
 	ListenAddr      string `toml:"listen_addr"`
 }
 
-func loadConfig(path string) (*config, error) {
+func LoadConfig(path string) (*config, error) {
 	var c config
 	defaultConfig(&c)
 

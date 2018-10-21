@@ -6,6 +6,7 @@ import (
 	"github.com/Gurpartap/logrus-stack"
 	"github.com/gorilla/mux"
 	"github.com/tsurubee/gofetcher/api"
+	"github.com/tsurubee/gofetcher/config"
 )
 
 func init() {
@@ -16,7 +17,7 @@ func init() {
 
 func main() {
 	confFile := "./config.toml"
-	c, err := loadConfig(confFile)
+	c, err := config.LoadConfig(confFile)
 	if err != nil {
 		logrus.Fatal(err)
 	}
