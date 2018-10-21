@@ -4,13 +4,13 @@ BOLD=\033[1m
 TEST ?= $(shell go list ./... | grep -v vendor)
 VERSION = $(shell cat version)
 REVISION = $(shell git describe --always)
-
-deps: ## Install dependencies
-	@echo "$(INFO_COLOR)==> $(RESET)$(BOLD)Installing Dependencies$(RESET)"
-	go get -u github.com/golang/dep/...
-	dep ensure
+ifeq ("$(shell uname)","Darwin")
+GO ?= GO111MODULE=on go
+else
+GO ?= GO111MODULE=on /usr/local/go/bin/go
+endif
 
 server: deps
-	go run *.go
+	$(GO) run *.go
 
 .PHONY: default test deps
