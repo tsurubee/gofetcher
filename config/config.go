@@ -3,7 +3,8 @@ package config
 import "github.com/BurntSushi/toml"
 
 type config struct {
-	ListenAddr      string `toml:"listen_addr"`
+	ListenAddr string            `toml:"listen_addr"`
+	UserFiles  map[string]string `toml:"user_files"`
 }
 
 func LoadConfig(path string) (*config, error) {

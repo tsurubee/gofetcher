@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"github.com/sirupsen/logrus"
 	"github.com/Gurpartap/logrus-stack"
 	"github.com/gorilla/mux"
@@ -16,7 +17,12 @@ func init() {
 }
 
 func main() {
-	confFile := "./config.toml"
+	confFile := os.Getenv("GOFETCHER_CONFIG_PATH")
+
+	if confFile == "" {
+		confFile = "./environment/dev/config.toml"
+	}
+
 	c, err := config.LoadConfig(confFile)
 	if err != nil {
 		logrus.Fatal(err)

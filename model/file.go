@@ -5,10 +5,6 @@ import (
 	"path"
 )
 
-var UserFiles = map[string]string {
-	"authKey": ".ssh/authorized_keys",
-}
-
 type File struct {
 	Path     string `json:"path"`
 	Output   string `json:"output"`
