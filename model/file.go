@@ -1,11 +1,9 @@
-package main
+package model
 
 import (
-	"encoding/json"
 	"net/http"
 	"io/ioutil"
 	"path"
-	"github.com/sirupsen/logrus"
 	"github.com/gorilla/mux"
 )
 
@@ -27,21 +25,16 @@ func UsersHandler(w http.ResponseWriter, r *http.Request) {
 
 	f, err := NewResource(vars)
 	if err != nil {
-		//ToDo
-		logrus.Info(err)
+		NewHTTPError(w, http.StatusInternalServerError, err)
+		return
 	}
 
-	err = f.Fetch(vars["user"])
-	if err != nil {
-		//ToDo
-		logrus.Info(err)
+	if err = f.Fetch(vars["user"]); err != nil {
+		NewHTTPError(w, http.StatusInternalServerError, err)
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(f); err != nil {
-		logrus.Info(err)
-	}
+	NewJsonResponse(w, http.StatusOK, f)
 }
 
 func (f *File) Fetch(user string) error {
