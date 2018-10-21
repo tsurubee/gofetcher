@@ -22,12 +22,20 @@ func makeUserFilePath(user, file string) string {
 	return path.Join("/home", user, file)
 }
 
-func UserFileHandler(w http.ResponseWriter, r *http.Request) {
+func UsersHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	user := r.FormValue("user")
-	f := &File{}
-	f.Path = makeUserFilePath(user, UserFiles[vars["fileType"]])
-	f.Fetch()
+
+	f, err := NewResource(vars)
+	if err != nil {
+		//ToDo
+		logrus.Info(err)
+	}
+
+	err = f.Fetch(vars["user"])
+	if err != nil {
+		//ToDo
+		logrus.Info(err)
+	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
@@ -36,10 +44,11 @@ func UserFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (f *File) Fetch() {
+func (f *File) Fetch(user string) error {
 	data, err := ioutil.ReadFile(f.Path)
 	if err != nil {
-		logrus.Info(err)
+		return err
 	}
 	f.Output = string(data)
+	return nil
 }
