@@ -1,9 +1,10 @@
-package model
+package api
 
 import (
 	"encoding/json"
 	"net/http"
 	"github.com/sirupsen/logrus"
+	"github.com/tsurubee/gofetcher/model"
 )
 
 type HTTPError struct {
@@ -11,7 +12,7 @@ type HTTPError struct {
 	Message string `json:"message"`
 }
 
-func NewJsonResponse(w http.ResponseWriter, statusCode int, f Fetcher) {
+func NewJsonResponse(w http.ResponseWriter, statusCode int, f model.Fetcher) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(statusCode)
 

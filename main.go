@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/Gurpartap/logrus-stack"
 	"github.com/gorilla/mux"
-	"github.com/tsurubee/gofetcher/model"
+	"github.com/tsurubee/gofetcher/api"
 )
 
 func init() {
@@ -24,7 +24,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.Path("/users/{resourceType}/{resourceName}/{user}").
-	  HandlerFunc(model.UsersHandler)
+	  HandlerFunc(api.UsersHandler)
 
 	logrus.Info("Start Listening on ", c.ListenAddr)
 	logrus.Fatal(http.ListenAndServe(c.ListenAddr, r))
